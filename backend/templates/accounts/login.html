@@ -1,6 +1,115 @@
-<h2>Login</h2>
-<form method="post">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit">Login</button>
-</form>
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Login — CERT-Army Cyber Portal</title>
+
+  <!-- Our main CSS file -->
+  <link rel="stylesheet" href="{% static 'css/style.css' %}" />
+</head>
+<body>
+
+  <!-- ══════════════════════════════════════════════════
+       LOGIN PAGE
+       Full-screen centred card layout.
+       No sidebar — this is the entry point.
+  ══════════════════════════════════════════════════ -->
+
+  <div class="login-wrapper">
+
+    <div class="login-box">
+
+      <!-- ── Header: logo + title ── -->
+      <div class="login-header">
+
+        <!-- Logo placeholder (replace src with real logo in production) -->
+        <div class="login-logo">🛡️</div>
+
+        <h1>AI-Enabled Defence Cyber<br>Incident Reporting Portal</h1>
+        <p>CERT-Army · Authorised Personnel Only</p>
+      </div>
+
+      <!-- ── Login Form ── -->
+      <!--
+        action: Django will set this to the login URL.
+        method: POST so credentials are not visible in the URL.
+        id:     Used by script.js for validation.
+      -->
+      <form
+  id="login-form"
+  method="POST"
+  novalidate
+>
+      
+        <!-- Django CSRF token — required for every POST form -->
+        {% csrf_token %}
+
+        <!-- Django shows form errors here if authentication fails -->
+        {% if form.errors %}
+          <div style="
+            background: rgba(232,69,69,0.15);
+            border: 1px solid rgba(232,69,69,0.4);
+            border-radius: 6px;
+            padding: 10px 14px;
+            color: #e84545;
+            font-size: 13px;
+            margin-bottom: 16px;
+          ">
+            ⚠️ Invalid username or password. Please try again.
+          </div>
+        {% endif %}
+
+        <!-- Username field -->
+        <div class="form-group">
+          <label for="username">Username / Service ID</label>
+          <input
+            type="text"
+            id="username"
+            name="username"
+            placeholder="Enter your service username"
+            autocomplete="username"
+            required
+          />
+          <!-- Error message shown by JavaScript -->
+          <span class="field-error" id="username-error"></span>
+        </div>
+
+        <!-- Password field -->
+        <div class="form-group">
+          <label for="password">Password</label>
+          <input
+            type="password"
+            id="password"
+            name="password"
+            placeholder="Enter your password"
+            autocomplete="current-password"
+            required
+          />
+          <span class="field-error" id="password-error"></span>
+
+          <!-- Forgot password link -->
+          <a href="#" class="forgot-link">Forgot Password?</a>
+        </div>
+
+        <!-- Submit button -->
+        <button type="submit" class="btn-primary">
+          🔐 &nbsp; Secure Login
+        </button>
+
+      </form>
+
+      <!-- Security notice -->
+      <div class="security-note">
+        🔒 This portal is restricted to authorised defence personnel.<br>
+        All activity is monitored and logged.
+      </div>
+
+    </div><!-- /login-box -->
+
+  </div><!-- /login-wrapper -->
+
+
+</body>
+</html>

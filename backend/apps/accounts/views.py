@@ -4,6 +4,10 @@ from django.contrib.auth.decorators import login_required
 from .forms import RegisterForm, LoginForm
 
 
+# ======================
+# AUTH VIEWS
+# ======================
+
 def register_view(request):
     if request.method == "POST":
         form = RegisterForm(request.POST)
@@ -20,17 +24,39 @@ def register_view(request):
 
 
 def login_view(request):
+    print("=== LOGIN VIEW HIT ===")
+    print("Method:", request.method)
+
     if request.method == "POST":
+        print("POST RECEIVED")
         form = LoginForm(request.POST)
+
         if form.is_valid():
+            print("FORM VALID")
             user = form.cleaned_data["user"]
+            print("User authenticated:", user)
+
             login(request, user)
+            print("LOGIN() CALLED")
+
+            next_url = request.GET.get("next")
+            print("NEXT URL:", next_url)
+
+            if next_url:
+                print("Redirecting to next")
+                return redirect(next_url)
+
+            print("Redirecting to dashboard")
             return redirect("dashboard")
+
+        else:
+            print("FORM INVALID")
+            print(form.errors)
+
     else:
         form = LoginForm()
 
     return render(request, "accounts/login.html", {"form": form})
-
 
 @login_required
 def logout_view(request):
@@ -38,6 +64,24 @@ def logout_view(request):
     return redirect("login")
 
 
+# ======================
+# DASHBOARD ROUTER
+# ======================
+
 @login_required
 def dashboard_view(request):
-    return render(request, "accounts/dashboard.html")
+
+    if request.user.role in ["admin", "cert", "veteran"]:
+        return redirect("operational_dashboard")
+
+    return redirect("reporter_dashboard")
+
+
+@login_required
+def operational_dashboard(request):
+    return render(request, "accounts/operational_dashboard.html")
+
+
+@login_required
+def reporter_dashboard(request):
+    return render(request, "accounts/reporter_dashboard.html")

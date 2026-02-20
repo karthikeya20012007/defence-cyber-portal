@@ -1,32 +1,22 @@
-from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin
+from django.contrib.auth.models import AbstractUser
 from django.db import models
-from django.utils import timezone
-from .managers import CustomUserManager
 
 
-class CustomUser(AbstractBaseUser, PermissionsMixin):
+class CustomUser(AbstractUser):
 
-    ROLE_CHOICES = (
-        ("DEFENCE_PERSONNEL", "Defence Personnel"),
-        ("FAMILY", "Family Member"),
-        ("VETERAN", "Veteran"),
-        ("CERT_OFFICER", "CERT Officer"),
-        ("ADMIN", "Admin"),
+    ROLE_CHOICES = [
+        ("civilian", "Civilian"),
+        ("army", "Army Personnel"),
+        ("veteran", "Veteran"),
+        ("cert", "CERT Officer"),
+        ("admin", "Admin"),
+    ]
+
+    role = models.CharField(
+        max_length=20,
+        choices=ROLE_CHOICES,
+        default="civilian"
     )
 
-    username = models.CharField(max_length=150, unique=True)
-    email = models.EmailField(unique=True)
-    role = models.CharField(max_length=30, choices=ROLE_CHOICES)
-
-    is_active = models.BooleanField(default=True)
-    is_staff = models.BooleanField(default=False)
-
-    date_joined = models.DateTimeField(default=timezone.now)
-
-    objects = CustomUserManager()
-
-    USERNAME_FIELD = "username"
-    REQUIRED_FIELDS = ["email"]
-
     def __str__(self):
-        return self.username
+        return f"{self.username} ({self.role})"
