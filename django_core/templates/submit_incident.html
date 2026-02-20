@@ -1,0 +1,12 @@
+<h2>Report Cyber Incident</h2>
+
+<form method="POST">
+    {% csrf_token %}
+    <textarea name="description" rows="6" cols="60"
+        placeholder="Describe the suspicious activity..."></textarea>
+    <br><br>
+    <button type="submit">Analyze Threat</button>
+</form>
+
+<br>
+<a href="{% url 'dashboard' %}">Go to Dashboard</a>

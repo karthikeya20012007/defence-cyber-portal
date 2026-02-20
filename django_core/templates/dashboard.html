@@ -1,0 +1,24 @@
+<h2>Your Incident Dashboard</h2>
+
+<a href="{% url 'submit_incident' %}">Submit New Incident</a>
+<a href="{% url 'logout' %}">Logout</a>
+
+<table border="1" cellpadding="10">
+    <tr>
+        <th>Description</th>
+        <th>Threat</th>
+        <th>Risk Score</th>
+        <th>Status</th>
+        <th>Date</th>
+    </tr>
+
+    {% for incident in incidents %}
+    <tr>
+        <td>{{ incident.description }}</td>
+        <td>{{ incident.threat_type }}</td>
+        <td>{{ incident.risk_score }}</td>
+        <td>{{ incident.status }}</td>
+        <td>{{ incident.created_at }}</td>
+    </tr>
+    {% endfor %}
+</table>
