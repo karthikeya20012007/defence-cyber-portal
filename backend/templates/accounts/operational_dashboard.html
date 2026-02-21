@@ -1,21 +1,159 @@
+{% load static %}
 <!DOCTYPE html>
-<html>
+<html lang="en" class="dark">
 <head>
-    <title>Operational Dashboard</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Operational Command Dashboard</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://unpkg.com/lucide@latest"></script>
 </head>
-<body>
 
-<h1>Operational Dashboard</h1>
-<p>This dashboard is for Admin, CERT, and Veteran users.</p>
+<body class="bg-black text-slate-200 min-h-screen">
 
-<ul>
-    <li>✔ View all incidents</li>
-    <li>✔ View ML risk predictions</li>
-    <li>✔ View blockchain logs</li>
-    <li>✔ AI priority ranking</li>
-</ul>
+<div class="flex">
 
-<a href="{% url 'logout' %}">Logout</a>
+    <!-- Sidebar -->
+    <aside class="w-64 bg-slate-950 p-6 border-r border-slate-800 min-h-screen">
+        <h1 class="text-xl font-bold text-blue-400 mb-8">CERT-Army</h1>
+
+        <nav class="space-y-4 text-sm">
+            <a href="#" class="block hover:text-white">📊 Dashboard</a>
+            <a href="#" class="block hover:text-white">⚠ All Incidents</a>
+            <a href="#" class="block hover:text-white">🧠 ML Risk Scores</a>
+            <a href="#" class="block hover:text-white">🔗 Blockchain Logs</a>
+            <a href="#" class="block hover:text-white">👥 Manage Users</a>
+        </nav>
+
+        <div class="mt-10">
+            <a href="{% url 'logout' %}" class="text-red-400 hover:text-red-300 text-sm">
+                Logout
+            </a>
+        </div>
+    </aside>
+
+    <!-- Main -->
+    <main class="flex-1 p-8">
+
+        <div class="mb-8">
+            <h2 class="text-2xl font-bold text-white">
+                Operational Command Center
+            </h2>
+            <p class="text-slate-400 text-sm">
+                Logged in as {{ request.user.username }}
+            </p>
+        </div>
+
+        <!-- Stats -->
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+
+            <div class="bg-slate-900 p-6 rounded-xl border border-slate-800">
+                <p class="text-slate-400 text-sm">Total Incidents</p>
+                <h2 class="text-3xl font-bold text-white">
+                    {{ total_incidents }}
+                </h2>
+            </div>
+
+            <div class="bg-slate-900 p-6 rounded-xl border border-slate-800">
+                <p class="text-slate-400 text-sm">Critical Threats</p>
+                <h2 class="text-3xl font-bold text-red-500">
+                    {{ critical_count }}
+                </h2>
+            </div>
+
+            <div class="bg-slate-900 p-6 rounded-xl border border-slate-800">
+                <p class="text-slate-400 text-sm">AI Flagged (Risk ≥ 70%)</p>
+                <h2 class="text-3xl font-bold text-orange-400">
+                    {{ ai_flagged }}
+                </h2>
+            </div>endfo
+
+            <div class="bg-slate-900 p-6 rounded-xl border border-slate-800">
+                <p class="text-slate-400 text-sm">Resolved</p>
+                <h2 class="text-3xl font-bold text-green-400">
+                    {{ resolved_count }}
+                </h2>
+            </div>
+
+        </div>
+
+        <!-- Incident Table -->
+        <div class="bg-slate-900 rounded-xl border border-slate-800 overflow-hidden">
+            <div class="p-4 border-b border-slate-800">
+                <h2 class="font-semibold text-white">All Reported Incidents</h2>
+            </div>
+
+            <table class="w-full text-sm">
+                <thead class="bg-slate-800 text-slate-400">
+                    <tr>
+                        <th class="p-3 text-left">ID</th>
+                        <th class="p-3 text-left">Title</th>
+                        <th class="p-3 text-center">Severity</th>
+                        <th class="p-3 text-center">Risk Score</th>
+                        <th class="p-3 text-center">Status</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                {% for incident in incidents %}
+                <tr class="border-t border-slate-800 hover:bg-slate-800/40 transition">
+
+                    <td class="p-3">
+                        #{{ incident.id }}
+                    </td>
+
+                    <td class="p-3">
+                        {{ incident.title }}
+                    </td>
+
+                    <td class="p-3 text-center">
+                        {% if incident.severity == "CRITICAL" %}
+                            <span class="text-red-500 font-bold">CRITICAL</span>
+                        {% elif incident.severity == "HIGH" %}
+                            <span class="text-orange-400 font-bold">HIGH</span>
+                        {% elif incident.severity == "MEDIUM" %}
+                            <span class="text-yellow-400 font-bold">MEDIUM</span>
+                        {% else %}
+                            <span class="text-green-400 font-bold">LOW</span>
+                        {% endif %}
+                    </td>
+
+                    <td class="p-3 text-center font-bold
+                        {% if incident.risk_score >= 80 %}
+                            text-red-500
+                        {% elif incident.risk_score >= 60 %}
+                            text-orange-400
+                        {% else %}
+                            text-green-400
+                        {% endif %}
+                    ">
+                        {{ incident.risk_score }}%
+                    </td>
+
+                    <td class="p-3 text-center">
+                        {{ incident.status }}
+                    </td>
+
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="5" class="text-center p-6 text-slate-500">
+                        No incidents reported yet.
+                    </td>
+                </tr>
+                {% endfor %}
+                </tbody>
+
+            </table>
+        </div>
+
+    </main>
+
+</div>
+
+<script>
+lucide.createIcons();
+</script>
 
 </body>
 </html>

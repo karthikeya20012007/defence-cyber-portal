@@ -1,0 +1,154 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CERT-Army Cyber Defence Portal</title>
+
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://unpkg.com/lucide@latest"></script>
+
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap');
+
+    body {
+        font-family: 'Inter', sans-serif;
+    }
+
+    .glass {
+        background: rgba(15, 23, 42, 0.6);
+        backdrop-filter: blur(12px);
+        border: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    .glow-blue:hover {
+        box-shadow: 0 0 30px rgba(59, 130, 246, 0.4);
+    }
+
+    .glow-green:hover {
+        box-shadow: 0 0 30px rgba(34, 197, 94, 0.4);
+    }
+</style>
+</head>
+
+<body class="bg-slate-950 text-slate-200 min-h-screen relative overflow-hidden">
+
+<!-- Background Glow Effects -->
+<div class="absolute inset-0 pointer-events-none">
+    <div class="absolute top-[-100px] left-[-100px] w-[400px] h-[400px] bg-blue-600/10 rounded-full blur-3xl"></div>
+    <div class="absolute bottom-[-100px] right-[-100px] w-[400px] h-[400px] bg-green-600/10 rounded-full blur-3xl"></div>
+</div>
+
+<!-- Classification Banner -->
+<div class="absolute top-0 w-full text-center text-[10px] tracking-widest uppercase bg-slate-900 border-b border-slate-800 py-2 text-slate-500">
+    Classification: Unclassified // For Official Use Only
+</div>
+
+<div class="relative flex flex-col items-center justify-center min-h-screen px-6 pt-16">
+
+    <!-- Logo -->
+    <div class="mb-8 flex items-center space-x-4">
+        <div class="bg-blue-600 p-4 rounded-xl shadow-lg shadow-blue-900/30">
+            <i data-lucide="shield-check" class="w-8 h-8 text-white"></i>
+        </div>
+        <div>
+            <h1 class="text-3xl font-bold text-white tracking-tight">
+                CERT-Army Portal
+            </h1>
+            <p class="text-xs uppercase tracking-widest text-blue-400 font-semibold">
+                Cyber Operations Command
+            </p>
+        </div>
+    </div>
+
+    <!-- Tagline -->
+    <p class="text-slate-400 max-w-xl text-center mb-12">
+        AI-powered cyber incident reporting, blockchain audit logs,
+        and real-time operational threat intelligence platform
+        for defence personnel and analysts.
+    </p>
+
+    <!-- Role Cards -->
+    <div class="grid md:grid-cols-2 gap-10 w-full max-w-4xl">
+
+        <!-- Admin Card -->
+        <div class="glass rounded-2xl p-8 transition-all duration-300 hover:scale-[1.02] glow-blue">
+
+            <div class="flex items-center justify-center mb-6">
+                <div class="bg-blue-600/20 p-4 rounded-xl">
+                    <i data-lucide="shield" class="w-8 h-8 text-blue-400"></i>
+                </div>
+            </div>
+
+            <h2 class="text-xl font-semibold text-center mb-3">
+                Command & Admin Access
+            </h2>
+
+            <p class="text-slate-400 text-sm text-center mb-6">
+                Risk monitoring, incident management,
+                AI threat analysis, blockchain audit tracking,
+                and operational dashboards.
+            </p>
+
+            <div class="space-y-4">
+                <a href="{% url 'login' %}?role=admin"
+                   class="block text-center bg-blue-600 hover:bg-blue-500 py-3 rounded-lg font-semibold transition">
+                    Access Admin Console
+                </a>
+
+                <a href="{% url 'register' %}?role=admin"
+                   class="block text-center border border-blue-600 hover:bg-blue-600 py-3 rounded-lg font-semibold transition">
+                    Register Admin
+                </a>
+            </div>
+
+        </div>
+
+        <!-- Reporter Card -->
+        <div class="glass rounded-2xl p-8 transition-all duration-300 hover:scale-[1.02] glow-green">
+
+            <div class="flex items-center justify-center mb-6">
+                <div class="bg-green-600/20 p-4 rounded-xl">
+                    <i data-lucide="user" class="w-8 h-8 text-green-400"></i>
+                </div>
+            </div>
+
+            <h2 class="text-xl font-semibold text-center mb-3">
+                Incident Reporter Access
+            </h2>
+
+            <p class="text-slate-400 text-sm text-center mb-6">
+                Submit cyber incidents, upload digital evidence,
+                and track AI-generated risk analysis securely.
+            </p>
+
+            <div class="space-y-4">
+                <a href="{% url 'login' %}?role=reporter"
+                   class="block text-center bg-green-600 hover:bg-green-500 py-3 rounded-lg font-semibold transition">
+                    Login as Reporter
+                </a>
+
+                <a href="{% url 'register' %}?role=reporter"
+                   class="block text-center border border-green-600 hover:bg-green-600 py-3 rounded-lg font-semibold transition">
+                    Register Reporter
+                </a>
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- Footer -->
+    <div class="mt-16 text-xs text-slate-600 text-center">
+        © {{ now|date:"Y" }} CERT-Army Cyber Defence Division • Secure Infrastructure Node
+    </div>
+
+</div>
+
+<script>
+lucide.createIcons();
+</script>
+
+</body>
+</html>

@@ -1,18 +1,114 @@
 {% load static %}
 <!DOCTYPE html>
-<html>
+<html lang="en" class="dark">
 <head>
-    <title>Register</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Register | CERT-Army Portal</title>
+
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://unpkg.com/lucide@latest"></script>
+
+<style>
+    body {
+        font-family: 'Inter', sans-serif;
+    }
+
+    .glass {
+        background: rgba(15, 23, 42, 0.75);
+        backdrop-filter: blur(14px);
+        border: 1px solid rgba(255,255,255,0.05);
+    }
+
+    .input-field {
+        width: 100%;
+        padding: 12px 14px;
+        border-radius: 12px;
+        background: #0f172a;
+        border: 1px solid #1e293b;
+        color: white;
+        font-size: 14px;
+        transition: 0.3s;
+    }
+
+    .input-field:focus {
+        outline: none;
+        border-color: #3b82f6;
+        box-shadow: 0 0 0 3px rgba(59,130,246,0.15);
+    }
+</style>
 </head>
-<body>
 
-<h2>Register</h2>
+<body class="bg-slate-950 text-slate-200 min-h-screen relative flex items-center justify-center px-6">
 
-<form method="post">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit">Register</button>
-</form>
+<!-- Background Glow -->
+<div class="absolute top-[-150px] left-[-150px] w-[400px] h-[400px] bg-blue-600/10 rounded-full blur-3xl"></div>
+<div class="absolute bottom-[-150px] right-[-150px] w-[400px] h-[400px] bg-green-600/10 rounded-full blur-3xl"></div>
+
+<div class="relative w-full max-w-md glass rounded-3xl shadow-2xl p-10">
+
+    <!-- Header -->
+    <div class="text-center mb-8">
+        <div class="inline-flex items-center justify-center bg-blue-600 p-3 rounded-xl shadow-lg shadow-blue-900/30 mb-4">
+            <i data-lucide="shield-check" class="w-6 h-6 text-white"></i>
+        </div>
+
+        <h1 class="text-2xl font-bold text-white tracking-tight">
+            Create Secure Account
+        </h1>
+
+        <p class="text-sm text-slate-400 mt-2">
+            CERT-Army Cyber Operations Access Portal
+        </p>
+    </div>
+
+    <!-- Form -->
+    <form method="post" class="space-y-6">
+        {% csrf_token %}
+
+        {% for field in form %}
+        <div class="space-y-2">
+            <label class="block text-sm font-medium text-slate-300">
+                {{ field.label }}
+            </label>
+
+            <!-- Add class to Django field -->
+            {{ field }}
+
+            {% if field.errors %}
+            <p class="text-red-400 text-xs mt-1">
+                {{ field.errors|striptags }}
+            </p>
+            {% endif %}
+        </div>
+        {% endfor %}
+
+        <!-- Submit -->
+        <button type="submit"
+            class="w-full bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 transition py-3 rounded-xl font-semibold shadow-lg shadow-blue-900/30 transform hover:-translate-y-0.5 duration-200">
+            🔐 Register Securely
+        </button>
+
+        <!-- Redirect -->
+        <p class="text-center text-sm text-slate-400 pt-4">
+            Already have an account?
+            <a href="{% url 'login' %}" class="text-blue-400 hover:text-blue-300 font-semibold">
+                Login
+            </a>
+        </p>
+
+    </form>
+
+    <!-- Classification Footer -->
+    <div class="text-center mt-8 text-[10px] tracking-widest uppercase text-slate-600">
+        Unclassified // For Official Use Only
+    </div>
+
+</div>
+
+<script>
+lucide.createIcons();
+</script>
 
 </body>
 </html>
